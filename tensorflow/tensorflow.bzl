@@ -450,6 +450,7 @@ def tf_cc_shared_object(
             visibility = visibility,
             **kwargs
         )
+
     if name not in names:
         native.filegroup(
             name = name,
@@ -490,6 +491,7 @@ def tf_cc_binary(
         names = [pattern % name for pattern in SHARED_LIBRARY_NAME_PATTERNS]
     else:
         names = [name]
+
     for name_os in names:
         native.cc_binary(
             name = name_os,

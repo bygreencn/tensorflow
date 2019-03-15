@@ -20,6 +20,7 @@ limitations under the License.
 // IWYU pragma: friend third_party/tensorflow/core/platform/logging.h
 
 #include <limits>
+#include <algorithm>
 #include <sstream>
 #include "tensorflow/core/platform/macros.h"
 #include "tensorflow/core/platform/types.h"
@@ -255,12 +256,14 @@ string* MakeCheckOpString(const T1& v1, const T2& v2, const char* exprtext) {
 // base/logging.h provides its own #defines for the simpler names EQ, NE, etc.
 // This happens if, for example, those are used as token names in a
 // yacc grammar.
-TF_DEFINE_CHECK_OP_IMPL(Check_EQ,
-                        ==)  // Compilation error with CHECK_EQ(NULL, x)?
-TF_DEFINE_CHECK_OP_IMPL(Check_NE, !=)  // Use CHECK(x == NULL) instead.
-TF_DEFINE_CHECK_OP_IMPL(Check_LE, <=)
+#if defined (_MSC_VER)
+#undef max // disable windows header max
+#endif
+TF_DEFINE_CHECK_OP_IMPL(Check_EQ, == )  // Compilation error with CHECK_EQ(NULL, x)?
+TF_DEFINE_CHECK_OP_IMPL(Check_NE, != )  // Use CHECK(x == NULL) instead.
+TF_DEFINE_CHECK_OP_IMPL(Check_LE, <= )
 TF_DEFINE_CHECK_OP_IMPL(Check_LT, <)
-TF_DEFINE_CHECK_OP_IMPL(Check_GE, >=)
+TF_DEFINE_CHECK_OP_IMPL(Check_GE, >= )
 TF_DEFINE_CHECK_OP_IMPL(Check_GT, >)
 #undef TF_DEFINE_CHECK_OP_IMPL
 
